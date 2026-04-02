@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drivee Clone App</title>
+    <style>
+        :root {
+            --bg-light-gray: #f5f5f6;
+            --accent-green: #a6ff7b;
+            --dark-card: #848e9c;
+            --text-dark: #32363f;
+            --text-gray: #757575;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .phone-screen {
+            width: 100%;
+            max-width: 400px;
+            height: 100vh;
+            background-color: var(--bg-light-gray);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+        }
+
+        .page {
+            display: none;
+            width: 100%;
+            height: 100%;
+            flex-direction: column;
+        }
+
+        .active {
+            display: flex;
+        }
+
+        .back-btn {
+            padding: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            width: fit-content;
+        }
+
+
+        #main-map {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end; 
+            background: url('map.png') center; 
+            background-size: cover;
+            position: relative;
+        }
+
+        .map-overlay {
+            background: white;
+            border-radius: 24px 24px 0 0;
+            padding: 20px;
+            width: 100%;
+            box-sizing: border-box;
+            box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
+        }
+        .drifte-badge {
+            position: absolute;
+            right: 15px;
+            bottom: 200px;
+            background: var(--accent-green);
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            z-index: 10;
+        }
+
+
+        .drifte-badge img {
+            width: 30px; 
+            height: 30px;
+        }
+
+        .address-box {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        .drifte-badge {
+            position: absolute;
+            right: 20px;
+            bottom: 180px;
+            background: var(--accent-green);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .order-btn {
+            background: var(--accent-green);
+            border: none;
+            width: 100%;
+            padding: 18px;
+            border-radius: 15px;
+            font-weight: bold;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .catalog-header {
+            display: flex;
+            gap: 15px;
+            padding: 0 15px;
+        }
+
+        .stat-box {
+            flex: 1;
+            padding: 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .stat-box.gray { background: #c2c3c5; }
+        .stat-box.green { background: var(--accent-green); }
+
+        .stat-box h2 { margin: 0; font-size: 28px; }
+        .stat-box p { margin: 5px 0 0; font-weight: bold; }
+
+        .catalog-title {
+            text-align: center;
+            letter-spacing: 2px;
+            margin: 40px 0 20px;
+            font-weight: 800;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            padding: 15px;
+        }
+
+        .item-card {
+            background: #c2c3c5;
+            height: 180px;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            padding-bottom: 15px;
+        }
+
+        .drift-circles {
+            display: flex;
+            justify-content: space-around;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .circle-unit {
+            width: 90px;
+            height: 90px;
+            background: var(--dark-card);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 11px;
+            margin-top: 10px;
+        }
+
+        .history-panel {
+            background: var(--dark-card);
+            margin: 20px;
+            border-radius: 25px;
+            padding: 25px;
+            color: white;
+            flex-grow: 0.5;
+        }
+
+        .info-bar {
+            background: var(--accent-green);
+            margin: 15px;
+            padding: 15px;
+            border-radius: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+        }
+        .purchase-card {
+            background: var(--dark-card);
+            margin: 10px 20px;
+            border-radius: 25px;
+            padding: 20px;
+            color: white;
+        }
+
+        .purchase-header { font-size: 12px; color: #aaa; margin-bottom: 5px; }
+        .purchase-date { font-weight: bold; margin-bottom: 15px; }
+        
+        .purchase-body {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            border-bottom: 1px solid #444;
+            padding-bottom: 15px;
+            margin-bottom: 10px;
+        }
+
+        .product-img { width: 60px; height: 60px; background: #444; border-radius: 10px; }
+        .repeat-btn { text-align: center; color: #aaa; font-size: 14px; display: block; width: 100%; text-decoration: none; }
+
+.drift-value-container {
+    display: flex;
+    align-items: center; 
+    gap: 5px;
+}
+
+.drift-number {
+    font-size: 28px;
+    font-weight: bold;
+    color: #1a1a1a;
+}
+
+.drift-icon-small {
+    width: 22px;      
+    height: 22px;
+    object-fit: contain;
+}
+
+.drift-label {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+}
+.main-balance-container {
+    display: flex;
+    justify-content: center; 
+    align-items: center;   
+    gap: 10px;            
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+.balance-text {
+    font-size: 32px;        
+    font-weight: 800;
+    margin: 0;
+    color: #1a1a1a;
+}
+
+.balance-icon-large {
+    width: 35px;         
+    height: 35px;
+    object-fit: contain;
+}
+    </style>
+</head>
+<body>
+
+    <div class="phone-screen">
+        
+        <div id="page1" class="page active">
+            <div id="main-map">
+                <div class="drifte-badge" onclick="navigateTo('page2')">
+                    <img src="icon.png" alt="bolt">
+                </div>
+                <div class="map-overlay">
+                    <div class="address-box">
+                        <div style="color:blue">● Средняя школа №39...</div>
+                        <div style="color:green; margin-top:10px">○ Куда? <span style="background:#e0f7cc; padding:2px 8px; border-radius:5px">Арктиче...я школа</span></div>
+                    </div>
+                    <button class="order-btn" onclick="navigateTo('page2')">Заказать</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="page2" class="page">
+            <div class="back-btn" onclick="navigateTo('page1')">❮</div>
+            <div class="catalog-header">
+                <div class="stat-box gray" onclick="navigateTo('page4')">
+    <div class="drift-value-container">
+        <span class="drift-number">40</span>
+        <img src="icon.png" alt="⚡" class="drift-icon-small">
+    </div>
+    <p class="drift-label">drifte</p>
+</div>
+                <div class="stat-box green" onclick="navigateTo('page3')">
+    <img src="https://img.icons8.com/ios-filled/30/000000/shopping-cart.png" alt="Корзина">
+    <p>Мои покупки</p>
+</div>
+            </div>
+            <h2 class="catalog-title">КАТАЛОГ</h2>
+            <div class="grid">
+                <div class="item-card"><span>название товара</span><small>цена</small></div>
+                <div class="item-card"><span>название товара</span><small>цена</small></div>
+                <div class="item-card"><span>название товара</span><small>цена</small></div>
+                <div class="item-card"><span>название товара</span><small>цена</small></div>
+            </div>
+        </div>
+
+        <div id="page3" class="page">
+            <div class="back-btn" onclick="navigateTo('page2')">❮ &nbsp;&nbsp;&nbsp; МОИ ПОКУПКИ</div>
+            
+            <div class="purchase-card">
+                <div class="purchase-header">№ заказа</div>
+                <div class="purchase-date">1 апреля 2026 г. в 21:01</div>
+                <div class="purchase-body">
+                    <div class="product-img"></div>
+                    <div><b>ТОВАР</b><br><small>сумма</small></div>
+                </div>
+                <a href="#" class="repeat-btn">повторить</a>
+            </div>
+
+            <div class="purchase-card">
+                <div class="purchase-header">№ заказа</div>
+                <div class="purchase-date">14 апреля 2026 г. в 21:01</div>
+                <div class="purchase-body">
+                    <div class="product-img"></div>
+                    <div><b>ТОВАР</b><br><small>сумма</small></div>
+                </div>
+                <a href="#" class="repeat-btn">повторить</a>
+            </div>
+        </div>
+
+        <div id="page4" class="page">
+    <div class="header">
+        <span class="back-btn" onclick="navigateTo('page2')">❮</span>
+    </div>
+
+    <div class="main-balance-container">
+        <h2 class="balance-text">У ВАС 40</h2>
+        <img src="icon.png" alt="⚡" class="balance-icon-large">
+    </div>
+            <div class="drift-circles">
+                <div>
+                    <small>сгорят через</small>
+                    <div class="circle-unit"><b>...</b> дней</div>
+                </div>
+                <div>
+                    <small>до старта призов</small>
+                    <div class="circle-unit"><b>...</b> дней</div>
+                </div>
+            </div>
+
+            <div class="history-panel">
+                <h3 style="margin-top: 0;">История начислений</h3>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span>Начислили<br><small style="color: #888;">10 апреля, 18:44</small></span>
+                    <span style="color: var(--accent-green); font-weight: bold;">+9</span>
+                </div>
+            </div>
+
+            <div class="info-bar">
+                Что такое дрифты? <span>❯</span>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function navigateTo(pageId) {
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.remove('active'));
+            
+            document.getElementById(pageId).classList.add('active');
+        }
+    </script>
+</body>
+</html>
